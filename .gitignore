@@ -1,0 +1,7 @@
+*.py[cod]
+*.sqlite3
+*.log
+.idea/
+.vscode/
+.venv/
+venv/

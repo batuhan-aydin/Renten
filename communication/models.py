@@ -9,6 +9,8 @@ class ItemComment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=True, null=True)
+    def __str__(self):
+        return self.comment
 
 
 class Message(models.Model):
@@ -18,3 +20,4 @@ class Message(models.Model):
     seen = models.DateField(blank=True, null=True)
     file = models.FileField(blank=True, null=True)
     created_at = models.DateField(auto_now_add=True)
+

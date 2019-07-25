@@ -15,3 +15,10 @@ class Item(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    
+
+class ItemRental(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+    hirer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(auto_now_add=True)

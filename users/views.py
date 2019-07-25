@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpRequest
+from django.views.generic import FormView
+from .forms import UserRegisterForm
 
-# Create your views here.
-def register(request):
-    return render(request, 'user/register.html')
+class RegistrationView(FormView):
+    form = UserRegisterForm
+    template_name='user/register.html'
+    success_url='/'
 
-def login(request):
-    return render(request, 'user/login.html')    

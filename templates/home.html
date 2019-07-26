@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4" style="color:white;">Renten</h1>
+          <a href="" class="btn btn-info">Kayıt Ol</a><a href="" class="btn btn-success">Giriş Yap</a>
+        </div>
+  </div>
+  <div class="col-lg-12 mb-4">
+      <div class="bg-white p-4 rounded shadow-sm h-100">
+        <button class="btn btn-success btn-circle btn-circle-lg m-1"><i class="fa fa-check"></i></button>
+        <button class="btn btn-primary btn-circle btn-circle-lg m-1"><i class="fa fa-cog"></i></button>
+        <button class="btn btn-info btn-circle btn-circle-lg m-1"><i class="fa fa-paper-plane"></i></button>
+        <button class="btn btn-warning btn-circle btn-circle-lg m-1"><i class="fa fa-tags"></i></button>
+        <button class="btn btn-danger btn-circle btn-circle-lg m-1"><i class="fa fa-sliders"></i></button>
+        <button class="btn btn-dark btn-circle btn-circle-lg m-1"><i class="fa fa-search"></i></button>
+        <button class="btn btn-secondary btn-circle btn-circle-lg m-1"><i class="fa fa-wrench"></i></button>
+        <button class="btn btn-light btn-circle btn-circle-lg m-1"><i class="fa fa-bar-chart"></i></button>
+      </div>
+    </div>
+ {% for item in items.all_items %}
+    {{item}}
+ {% endfor %}
+{% endblock body %}

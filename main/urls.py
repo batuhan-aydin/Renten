@@ -22,4 +22,5 @@ urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register' ),
     path('login/', LoginView.as_view(), name='login' ),
     path('reset_password/', PasswordResetView.as_view(), name='reset_password' ),
+    path('', include('items.urls')),
 ]

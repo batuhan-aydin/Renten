@@ -9,6 +9,8 @@
     min-height: 150px;
 }
 
+/* Category */
+
 .btn-circle {
   width: 45px;
   height: 45px;
@@ -44,4 +46,20 @@
   font-size: 1.3rem;
 }
 
-/*
+/* Items on homepage */
+
+#items-mainpage {
+  margin-top: 2%;
+}
+
+#item-image {
+  border-radius: 10%;
+}
+
+#item-header {
+  color: rgb(44, 44, 44);
+}
+
+#item-text{
+  color: grey;
+}

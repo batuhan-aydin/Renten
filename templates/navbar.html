@@ -11,12 +11,18 @@
         </form>
       </ul>  
       <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+        <li class="nav-item active">
+            <a class="nav-link"href="#">Çıkış</a>
+          </li>
+        {% else %}
         <li class="nav-item active">
           <a class="nav-link"href="#">Kayıt</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="#">Giriş</a>
         </li>
+        {% endif %}
       </ul>
  
     </div>

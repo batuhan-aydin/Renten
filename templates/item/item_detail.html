@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+{% if category and itemslug %}
+    
+    {% for i in category  %}
+        {{i}}
+    {% endfor %}
+    
+    {% for i in itemslug  %}
+        {{i}}
+    {% endfor %}
+        
+        
+{% else %}
+    <h1>nothing!</h1>
+{% endif %}
+    
+    
+{% endblock body %}

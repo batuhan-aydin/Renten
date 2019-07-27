@@ -11,12 +11,16 @@
         </form>
       </ul>  
       <ul class="navbar-nav ml-auto">
+        {%if not request.user.is_authenticated%}
+        <h1>Merhaba{{user.username}}</h1>
         <li class="nav-item active">
           <a class="nav-link"href="#">Kayıt</a>
         </li>
+        {%else%}
         <li class="nav-item">
           <a class="nav-link active" href="#">Giriş</a>
         </li>
+        {%endif%}
       </ul>
  
     </div>

@@ -11,7 +11,7 @@ class UserRegisterForm(UserCreationForm):
         fields = UserCreationForm.Meta.fields + ('username', 'email')
 
 class UserLoginForm(AuthenticationForm):
-    pass
+    remember_me = forms.BooleanField(required=False)
 
 class PasswordReset(PasswordResetForm):
     pass

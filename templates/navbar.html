@@ -8,8 +8,8 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="form-inline" method="GET" action='{% url "search" %}'>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
       </form>
     </ul>
     {{request.user}}

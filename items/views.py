@@ -38,7 +38,18 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         qs = super(ItemUpdateView, self).get_queryset()
         return qs.filter(user=self.request.user)    
-    
+
+
+class SearchItemView(ListView):
+    model = Item
+    template_name = "item/item_search.html"
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)), 
+                    'all_categories': Category.objects.all()}
+        return queryset    
    
 
 from django.db.models import Q

@@ -11,10 +11,13 @@
     <div class="row text-center">
       {%for category in items.all_categories%}
         <div class="col-1">
-            <a class="btn btn-{{category.get_color_display}} btn-circle btn-circle-lg m-1">
-              <i class="fa fa-{{category.get_icon_display}}"></i>
-              <span>{{category.name}}</span>
-            </a>
+          <form action="{% url 'searchcat' %}" method="GET">
+            <button class="btn btn-{{category.get_color_display}} btn-circle btn-circle-lg m-1">
+              <i class="fa fa-{{category.get_icon_display}}"></i>         
+            </button>
+            <span>{{category.name}}</span>
+            <input type="hidden" value="{{category.name}}" name="q">
+          </form>
         </div>
       {% endfor %}  
     </div>

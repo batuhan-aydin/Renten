@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView, UpdateView, CreateView
 from items.models import Item, Category
 from items.forms import ItemCreateForm
+from django.db.models import Q
 
 class HomeView(ListView):
     model = Item
@@ -42,17 +43,29 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 
 class SearchItemView(ListView):
     model = Item
-    template_name = "item/item_search.html"
+    template_name = "home.html"
     context_object_name = 'items'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        
         queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)), 
                     'all_categories': Category.objects.all()}
         return queryset    
    
+class SearchCategoryView(ListView):
+    model = Item
+    template_name = 'home.html'
+    context_object_name = 'items'
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        cat = Category.objects.filter(name=query).first()
+        catid = cat.id
+        queryset = {'all_items': Item.objects.filter(Q(category=catid)), 
+                    'all_categories': Category.objects.all()}
+        return queryset    
 
-from django.db.models import Q
+
 class ItemDetailView(LoginRequiredMixin, DetailView):
     model = Item
     template_name = 'item/item_detail.html'

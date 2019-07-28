@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Kira Urun Ekle{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    <form method="POST" class="form-group" style="margin-top: 5%;">
+	{% csrf_token %}
+	<div class="row justify-content-center">
+		<div class="col-6">
+		{{ form|crispy }}
+		<div class="col text-center">
+			<button type="submit" class="btn btn-success">İlan Ver</button>
+		</div>
+		</div>
+	</div>
+    </form>
+{% endblock %}

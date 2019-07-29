@@ -24,6 +24,10 @@ class ItemCreateView(CreateView):
     template_name = "item/item_create.html"
     success_url = '/'
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(ItemCreateView, self).form_valid(form)
+
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
@@ -50,7 +54,8 @@ class SearchItemView(ListView):
         query = self.request.GET.get('q')
         
         queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)), 
-                    'all_categories': Category.objects.all()}
+                    'all_categories': Category.objects.all(),
+                    'is_search': True}
         return queryset    
    
 class SearchCategoryView(ListView):
@@ -62,9 +67,25 @@ class SearchCategoryView(ListView):
         cat = Category.objects.filter(name=query).first()
         catid = cat.id
         queryset = {'all_items': Item.objects.filter(Q(category=catid)), 
-                    'all_categories': Category.objects.all()}
+                    'all_categories': Category.objects.all(),
+                    'is_search': True}
         return queryset    
 
+class SearchPriceView(ListView):
+    model = Item
+    template_name = 'home.html'
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        minQuery = self.request.GET.get('minPrice')
+        maxQuery = self.request.GET.get('maxPrice')
+        queryset = {'all_items': Item.objects.filter(price__range=(minQuery, maxQuery)), 
+                    'all_categories': Category.objects.all(),
+                    'minimum': minQuery,
+                    'maximum': maxQuery,
+                    'is_search': True
+                    }
+        return queryset   
 
 class ItemDetailView(LoginRequiredMixin, DetailView):
     model = Item

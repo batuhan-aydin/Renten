@@ -24,6 +24,10 @@ class ItemCreateView(CreateView):
     template_name = "item/item_create.html"
     success_url = '/'
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(ItemCreateView, self).form_valid(form)
+
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item

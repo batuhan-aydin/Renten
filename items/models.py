@@ -48,7 +48,7 @@ class Item(models.Model):
     is_available = models.BooleanField(default=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='category')
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='items')
 
     slug = models.SlugField(unique=True, null=True, blank=True)
 

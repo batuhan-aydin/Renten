@@ -14,8 +14,12 @@
 <p> Last Name = {{ profile.last_name }}</p>
 <p> Email =        {{ profile.email }}</p>
 <p> Last Login = {{ profile.last_login }}</p>
-   
-<br>
+        {%for item in items%}
+        {{item.name}}
+        <img id="itemdetail-image" src="{{item.picture.url}}" width="500px" height="500px" alt="ItemPicture">
+
+        {%endfor%}
+   <br>
 <hr>
 
 {% else %}

@@ -54,6 +54,8 @@
 
 #item-image {
   border-radius: 10%;
+  height: 200px;
+  width: 255px;
 }
 
 #item-header {
@@ -63,3 +65,25 @@
 #item-text{
   color: grey;
 }
+
+/* item detail page  */
+
+#itemdetail{
+  margin-top: 3%;
+}
+
+#itemdetail-image{
+  border-radius: 10%;
+}
+
+#itemdetail-description
+{
+  margin-top: 6%;
+}
+
+#itemdetail-owner{
+  margin-top: 10%;
+}
+
+
+

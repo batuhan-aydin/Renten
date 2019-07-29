@@ -4,20 +4,17 @@
 <div class="jumbotron jumbotron-fluid">
         <div class="container">
           <h1 class="display-4" style="color:white;">Renten</h1>
-          <a href="{% url "users:register" %}" class="btn btn-info">Kayıt Ol</a><a href="" class="btn btn-success">Giriş Yap</a>
+          <a href="" class="btn btn-info">Kayıt Ol</a><a href="" class="btn btn-success">Giriş Yap</a>
         </div>
   </div>
   <div class="container">
     <div class="row text-center">
       {%for category in items.all_categories%}
         <div class="col-1">
-          <form action="{% url 'searchcat' %}" method="GET">
-            <button class="btn btn-{{category.get_color_display}} btn-circle btn-circle-lg m-1">
-              <i class="fa fa-{{category.get_icon_display}}"></i>         
-            </button>
-            <span>{{category.name}}</span>
-            <input type="hidden" value="{{category.name}}" name="q">
-          </form>
+            <a class="btn btn-{{category.get_color_display}} btn-circle btn-circle-lg m-1">
+              <i class="fa fa-{{category.get_icon_display}}"></i>
+              <span>{{category.name}}</span>
+            </a>
         </div>
       {% endfor %}  
     </div>

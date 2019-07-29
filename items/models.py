@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 
+
 class Category(models.Model):
     COLORS = (
         ('S', 'success'),
@@ -34,11 +35,14 @@ class Category(models.Model):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name    
+
 
 class Item(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='items')
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=250)
+    description = models.TextField(max_length=250)
     price = models.FloatField()
     picture = models.ImageField(upload_to='item_pictures')
     is_available = models.BooleanField(default=True)
@@ -50,7 +54,9 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Item, self).save(*args, **kwargs)
+        return super(Item, self).save(*args, **kwargs)
+    def __str__(self):
+        return self.name
     
 
 class ItemRental(models.Model):
@@ -58,3 +64,4 @@ class ItemRental(models.Model):
     hirer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(auto_now_add=True)
+

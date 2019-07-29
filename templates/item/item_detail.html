@@ -19,7 +19,7 @@
                 <a class="btn btn-outline-danger" href="{% url 'item-update' item.slug %}">Sil</a>
             {% else %}
                 {% if item.is_available %}
-                <a class="btn btn-outline-success" href="#">Kirala</a>
+                <a class="btn btn-outline-success" href="{% url "item_rent" pk=item.id %}">Kirala</a>
                 {% else %}
                 <a class="btn btn-danger" href="#">Urun Kiralık Değil</a>
                 {% endif %}

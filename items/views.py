@@ -31,7 +31,6 @@ class ItemDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['category'] = Category.objects.filter(Q(slug=self.kwargs['categoryslug']))
         context['itemslug'] = Item.objects.filter(Q(slug=self.kwargs['itemslug']))
-        
         return context
 
     # def get_object(self):

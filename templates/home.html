@@ -26,7 +26,7 @@
           Fiyat
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <form method="GET" action="">
+          <form method="GET" action="{% url 'search-price' %}">
             {% csrf_token %}
             <input type="number" placeholder="Min" step="0.01" min="0" id="minPrice" name="minPrice">
             - <input type="number" placeholder="Max" step="0.01" min="0" id="maxPrice" name="maxPrice">

@@ -69,6 +69,18 @@ class SearchCategoryView(ListView):
                     'all_categories': Category.objects.all()}
         return queryset    
 
+class SearchPriceView(ListView):
+    model = Item
+    template_name = 'home.html'
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        minQuery = self.request.GET.get('minPrice')
+        maxQuery = self.request.GET.get('maxPrice')
+        queryset = {'all_items': Item.objects.filter(price__range=(minQuery, maxQuery)), 
+                    'all_categories': Category.objects.all()
+                    }
+        return queryset   
 
 class ItemDetailView(LoginRequiredMixin, DetailView):
     model = Item

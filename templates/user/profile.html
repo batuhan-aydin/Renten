@@ -14,8 +14,18 @@
 <p> Last Name = {{ profile.last_name }}</p>
 <p> Email =        {{ profile.email }}</p>
 <p> Last Login = {{ profile.last_login }}</p>
-   
-<br>
+        {%for item in items%}
+        <div class="card">
+                <img class="card-img-top" id="item-image" src="{{ item.picture.url }}">
+                <div class="card-body">
+                        <h5 class="card-title" id="item-header"><a href="">{{item.name}}</a></h5>
+                        <p class="card-text" id="item-text">{{item.description|truncatewords:5}}...</p>
+                        <p class="card-text">{{item.name}}</p>
+                        <p class="card-text">{{item.price}}</p>
+        </div>
+        </div>
+        {%endfor%}
+   <br>
 <hr>
 
 {% else %}

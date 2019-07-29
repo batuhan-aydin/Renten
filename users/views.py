@@ -59,12 +59,13 @@ class ProfileDetailView(LoginRequiredMixin,DetailView):
             return self.request.user
         else:
             return super().get_object(queryset)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["user"] = UserProfile.objects.filter(user=self.request.user)
+        o = User.objects.get(id=self.request.user.id)
+        context["items"] = Item.objects.filter(owner=o).values()
         context["is_me"] = self.is_me   
         return context
+        
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = UserProfile
     form_class = UserRegisterForm

@@ -1,9 +1,27 @@
 {% extends "base.html" %}
- {% block title %}Password Reset{% endblock %} 
-{% load crispy_forms_tags %} 
+{% block title %}Password Reset{% endblock %}
+{% load crispy_forms_tags %}
 
 
 {% block body %}
-<h1>{{ object }}</h1>
+{% if request.user.is_authenticated %}
+<h1 style="text-align: center;">
+    {% if is_me %} <a class="btn btn-secondary btn-sm"
+        href="{% url "users:profile_update" %}"><small>Güncelle</small></a>{% endif %}
+</h1>
+<p> Username = {{ profile.username }}</p>
+<p> First Name = {{ profile.first_name }}</p>
+<p> Last Name = {{ profile.last_name }}</p>
+<p> Email =        {{ profile.email }}</p>
+<p> Last Login = {{ profile.last_login }}</p>
+   
+<br>
+<hr>
 
- {% endblock %}
+{% else %}
+
+
+{% endif %}
+
+
+{% endblock %}

@@ -49,8 +49,8 @@ class PasswordResetView(FormView):
     success_url='/'
 
 
-class ProfileDetailView(LoginRequiredMixin,DetailView):
-    model = User
+class ProfileDetailView(DetailView):
+    model = UserProfile
     template_name="user/profile.html"
     context_object_name = "profile"
     is_me = False
@@ -60,11 +60,19 @@ class ProfileDetailView(LoginRequiredMixin,DetailView):
         else:
             return super().get_object(queryset)
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        o = User.objects.get(id=self.request.user.id)
-        context["items"] = Item.objects.filter(owner=o).values()
-        context["is_me"] = self.is_me   
-        return context
+        if self.is_me:
+            context = super().get_context_data(**kwargs)
+            o = UserProfile.objects.get(pk=self.request.user.id)
+            context["items"] = Item.objects.filter(owner=o).values()
+            context["is_me"] = self.is_me   
+            return context
+            return context
+        else:
+            context = super().get_context_data(**kwargs)
+            o = UserProfile.objects.get(pk=self.kwargs['pk'])
+            context["items"] = Item.objects.filter(owner=o).values()
+            context["is_me"] = self.is_me   
+            return context
         
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = UserProfile

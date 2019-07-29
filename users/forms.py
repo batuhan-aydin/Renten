@@ -1,27 +1,26 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,PasswordResetForm,UserChangeForm
 from django.contrib.auth.models import User
 from .models import UserProfile
 
+class RealDateInput(forms.DateInput):
+    input_type = "date"
+
 
 class UserRegisterForm(UserCreationForm):
-    birth_date = forms.DateField(help_text='Required. Format: YYYY-MM-DD',required=False)
-    telephone = forms.CharField(max_length=30,required=False)
-    location = forms.CharField(max_length=50,required=False)
-    profile_picture = forms.ImageField(required=False)   
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields =UserCreationForm.Meta.fields +  ("username","password1","password2","email","first_name","last_name","telephone","location","birth_date","profile_picture")        
+    class Meta(UserCreationForm):
+        model = UserProfile
+        fields =UserCreationForm.Meta.fields +  (
+        "password1","password2", "email","first_name", "last_name","telephone", "birth_date", "location", "profile_picture")
+        widgets = {"birthday": RealDateInput}
 class UserLoginForm(AuthenticationForm):
     remember_me = forms.BooleanField(required=False)
 
 class PasswordReset(PasswordResetForm):
     pass
 
-class ProfileUpdateForm(forms.ModelForm):
-    pass
-    # class Meta(UserProfile.Meta):
-    #     model = UserProfile
-    #     fields = UserCreationForm.Meta.fields + (
-    #     'telephone', 'location', 'profil_picture')        
-
+class ProfileUpdateForm(UserChangeForm):
+    class Meta(UserChangeForm):
+        model = UserProfile
+        fields = [
+            'first_name', 'last_name', 'email', 'telephone', 'birth_date', 'location', 'profile_picture']

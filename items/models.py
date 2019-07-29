@@ -63,6 +63,5 @@ class ItemRental(models.Model):
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     hirer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     fulfilled = models.BooleanField(default=False)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 

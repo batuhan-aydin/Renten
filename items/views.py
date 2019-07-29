@@ -2,9 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic.list import ListView
-from django.views.generic import DetailView, UpdateView, CreateView
+from django.views.generic import DetailView, UpdateView, CreateView, RedirectView
 from items.models import Item, Category, ItemRental
 from items.forms import ItemCreateForm
+from django.urls import reverse
 from django.db.models import Q
 
 class HomeView(ListView):
@@ -126,4 +127,34 @@ class ItemDetailView(DetailView):
 
     #     return obj
 
+class ItemActionView(RedirectView):
+    action = None
+    validate = False
+    url = None
+    context_object_name='item'
 
+    def get_redirect_url(self, *args, **kwargs):
+        return self.url or reverse("item-detail", kwargs={'slug': self.kwargs["itemslug"]})
+
+    def apply_action(self, action):
+        if action == "rent":
+            ItemRental.objects.create(hirer=self.request.user, item=self.item)
+        elif action == "accept":
+            rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
+            rental.fulfilled = True
+            rental.save(update_fields=["fulfilled"])
+        elif action == "switch":
+            self.item.is_available_for_rental = not self.item.is_available_for_rental
+            self.item.save(update_fields=["is_available_for_rental"])
+            if not self.item.is_available_for_rental:
+                self.url = reverse("home")
+        else:
+            pass
+
+    def get(self, request, *args, **kwargs):
+        self.item = Item.objects.get(id=self.kwargs["pk"])
+        if self.validate and not request.GET.get("valid") == 'true':
+            return render(request, "rental/validate.html", {"item": self.item, "action": self.action})
+        else:
+            self.apply_action(self.action)
+            return super().get(request, *args, **kwargs)

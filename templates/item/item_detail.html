@@ -39,21 +39,24 @@
             <br>
             <p style="color:gray">Satıcıya mesaj at</p>
             <br>
+            {{item.itemrental_set.all}}
+            {% for rental in item.itemrental_set.all %}
             <div class="card">
                 <div class="card-body">
-                    
-                        <p>Rented by rental.hirer</p>
-                    
-                        <p>Requested by rental.hirer
-                        
+                    {% if rental.fulfilled %}
+                        <p> {{ rental.hirer }} tarafından kiralandı</p>
+                    {% else %}
+                        <p>{{ rental.hirer }} tarafından kiralama isteği
+                        {% if item.owner == request.user %}
                             <a class="btn btn-sm btn-primary"
-                               href="#">Accept</a>
-                        
+                               href="{% url "item_accept" pk=item.id rental_pk=rental.id %}">Kabul</a>
+                        {% endif %}
                         </p>
-                    
-                    <p>Date rental.created</p>
+                    {% endif %}                   
+                    <p>Tarih: {{ rental.created }}</p>
                 </div>
             </div>
+            {% endfor %}
 
         </div>
     </div>

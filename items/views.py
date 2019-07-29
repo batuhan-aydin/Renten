@@ -54,7 +54,8 @@ class SearchItemView(ListView):
         query = self.request.GET.get('q')
         
         queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)), 
-                    'all_categories': Category.objects.all()}
+                    'all_categories': Category.objects.all(),
+                    'is_search': True}
         return queryset    
    
 class SearchCategoryView(ListView):
@@ -66,7 +67,8 @@ class SearchCategoryView(ListView):
         cat = Category.objects.filter(name=query).first()
         catid = cat.id
         queryset = {'all_items': Item.objects.filter(Q(category=catid)), 
-                    'all_categories': Category.objects.all()}
+                    'all_categories': Category.objects.all(),
+                    'is_search': True}
         return queryset    
 
 class SearchPriceView(ListView):
@@ -78,7 +80,10 @@ class SearchPriceView(ListView):
         minQuery = self.request.GET.get('minPrice')
         maxQuery = self.request.GET.get('maxPrice')
         queryset = {'all_items': Item.objects.filter(price__range=(minQuery, maxQuery)), 
-                    'all_categories': Category.objects.all()
+                    'all_categories': Category.objects.all(),
+                    'minimum': minQuery,
+                    'maximum': maxQuery,
+                    'is_search': True
                     }
         return queryset   
 

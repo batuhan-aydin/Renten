@@ -21,20 +21,25 @@
         </div>
       {% endfor %}  
     </div>
-    <div class="dropdown" style="margin-top:5%;">
+    {% if items.is_search %}
+      <br>
+      <a class="btn btn-danger" href="{% url 'home' %}"><i class="fas fa-long-arrow-alt-left"></i> Aramayı sıfırla</a>
+    {% endif %}
+    <div class="dropdown" style="margin-top:2%;">
         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Fiyat
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <form method="GET" action="{% url 'search-price' %}">
-            {% csrf_token %}
             <input type="number" placeholder="Min" step="0.01" min="0" id="minPrice" name="minPrice">
             - <input type="number" placeholder="Max" step="0.01" min="0" id="maxPrice" name="maxPrice">
             <input type="submit" value="submit" style="display: none;"/>
           </form>  
         </div>
       </div>
-      
+      {% if items.minimum and items.maximum %}
+        <p>₺{{items.minimum}} - ₺{{items.maximum}}</p>
+      {% endif %}
     <div class="row text-center" id="items-mainpage">
       {% for item in items.all_items %}
         <div class="col-3">

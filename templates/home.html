@@ -4,7 +4,11 @@
 <div class="jumbotron jumbotron-fluid">
         <div class="container">
           <h1 class="display-4" style="color:white;">Renten</h1>
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'item-create' %}" class="btn btn-success">Ürün Ekle</a>
+          {% else %}
           <a href="{% url "users:register" %}" class="btn btn-info">Kayıt Ol</a><a href="" class="btn btn-success">Giriş Yap</a>
+          {% endif %}
         </div>
   </div>
   <div class="container">

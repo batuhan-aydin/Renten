@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from items.models import ItemRental
 
 
 class RegistrationView(FormView):
@@ -63,14 +64,12 @@ class ProfileDetailView(DetailView):
         if self.is_me:
             context = super().get_context_data(**kwargs)
             o = UserProfile.objects.get(pk=self.request.user.id)
-            context["items"] = Item.objects.filter(owner=o).values()
+            context["itemrentals"] = ItemRental.objects.filter(hirer=o.id)
             context["is_me"] = self.is_me   
-            return context
             return context
         else:
             context = super().get_context_data(**kwargs)
             o = UserProfile.objects.get(pk=self.kwargs['pk'])
-            context["items"] = Item.objects.filter(owner=o).values()
             context["is_me"] = self.is_me   
             return context
         

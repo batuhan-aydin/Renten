@@ -85,5 +85,11 @@
   margin-top: 10%;
 }
 
+/* Profile Page */
+
+.profile_item_picture {
+  border-radius: 80%;
+}
+
 
 

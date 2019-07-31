@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4 offset-4" style="margin-top: 10%;">
+            <span class="text-info">{{ item }}</span> ürünü sistemden silinecek <strong class="text-warning">Emin misiniz?</strong>
+            <form method="GET">
+                <button type="submit" class="btn btn-primary"  name="valid" value="true">Evet</button>
+                <a class="btn btn-primary" href="{% url 'item-detail' item.slug %}">Hayır</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

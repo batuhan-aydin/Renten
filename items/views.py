@@ -166,7 +166,7 @@ class ItemActionView(RedirectView):
     def get(self, request, *args, **kwargs):
         self.item = Item.objects.get(id=self.kwargs["pk"])
         if self.validate and not request.GET.get("valid") == 'true':
-            return render(request, "rental/validate.html", {"item": self.item, "action": self.action})
+            return render(request, "item/validate.html", {"item": self.item, "action": self.action})
         else:
             self.apply_action(self.action)
             return super().get(request, *args, **kwargs)

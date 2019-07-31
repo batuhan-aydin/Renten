@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans "Logged Out" %}
+{% endblock %}
+{% block body %}
+    {% blocktrans %}You have successfully logged out.{% endblocktrans %}
+
+    <noscript><a href="/">{% blocktrans %}Click here to proceed to home page.{% endblocktrans %}</a>
+    </noscript>
+{% endblock %}
+{% block static %}
+    <script>
+        setTimeout(function () {
+            window.location.href = "/"
+        }, 10000)
+    </script>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from items.views import HomeView, ItemDetailView, ItemUpdateView, ItemCreateView, SearchItemView, SearchCategoryView, SearchPriceView, ItemActionView
+from items.views import HomeView, ItemDetailView, ItemUpdateView, ItemCreateView, SearchItemView, SearchCategoryView, SearchPriceView, ItemActionView, RentListView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -8,10 +8,12 @@ urlpatterns = [
     path('item/category/search', SearchCategoryView.as_view(), name='search_category'),
     path('item/price/search', SearchPriceView.as_view(), name='search_price'),
     path("item/<int:pk>/actions/accept/<int:rental_pk>/", ItemActionView.as_view(action="accept"), name="item_accept"),
+    path("item/<int:pk>/actions/reject/<int:rental_pk>/", ItemActionView.as_view(action="reject"), name="item_reject"),
     path("item/<int:pk>/actions/rent/", ItemActionView.as_view(action="rent"), name="item_rent"),
     path("item/<int:pk>/actions/switch/", ItemActionView.as_view(action="switch"), name="item_switch"),
     path("item/<int:pk>/edit/", ItemActionView.as_view(action="edit"), name="item_edit"),
     path("item/<int:pk>/remove/", ItemActionView.as_view(action="remove", validate=True), name="item_remove"),
+    path("item/rentrequests/", RentListView.as_view(), name='rent_requests'),
     path('item/update/<slug:itemslug>', ItemUpdateView.as_view(), name='item-update'),
     path('item/<slug:itemslug>/', ItemDetailView.as_view(), name='item-detail'),
 ]

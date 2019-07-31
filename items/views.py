@@ -6,7 +6,7 @@ from django.views.generic import DetailView, UpdateView, CreateView, RedirectVie
 from items.models import Item, Category, ItemRental
 from items.forms import ItemCreateForm
 from django.urls import reverse
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.utils.translation import gettext_noop
 
 class HomeView(ListView):
@@ -15,7 +15,7 @@ class HomeView(ListView):
     context_object_name = 'items'
 
     def get_queryset(self):
-        queryset = {'all_items': Item.objects.all(), 
+        queryset = {'all_items': Item.objects.order_by('created_at').filter(is_available=True).all(), 
                     'all_categories': Category.objects.all(),
                     }
         return queryset
@@ -57,7 +57,7 @@ class SearchItemView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         
-        queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)), 
+        queryset = {'all_items': Item.objects.filter(Q(name__icontains=query)).order_by('created_at').filter(is_available=True).all(), 
                     'all_categories': Category.objects.all(),
                     'is_search': True}
         return queryset    
@@ -70,7 +70,7 @@ class SearchCategoryView(ListView):
         query = self.request.GET.get('q')
         cat = Category.objects.filter(name=query).first()
         catid = cat.id
-        queryset = {'all_items': Item.objects.filter(Q(category=catid)), 
+        queryset = {'all_items': Item.objects.filter(Q(category=catid)).order_by('created_at').filter(is_available=True).all(), 
                     'all_categories': Category.objects.all(),
                     'is_search': True}
         return queryset    
@@ -83,7 +83,7 @@ class SearchPriceView(ListView):
     def get_queryset(self):
         minQuery = self.request.GET.get('minPrice')
         maxQuery = self.request.GET.get('maxPrice')
-        queryset = {'all_items': Item.objects.filter(price__range=(minQuery, maxQuery)), 
+        queryset = {'all_items': Item.objects.filter(price__range=(minQuery, maxQuery)).order_by('created_at').filter(is_available=True).all(), 
                     'all_categories': Category.objects.all(),
                     'minimum': minQuery,
                     'maximum': maxQuery,
@@ -135,7 +135,7 @@ class ItemActionView(RedirectView):
     context_object_name='item'
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.url or reverse("item-detail", kwargs={'slug': self.kwargs["itemslug"]})
+        return self.url or reverse("rent_requests")
 
     def apply_action(self, action):
         if action == gettext_noop("rent"):
@@ -146,6 +146,12 @@ class ItemActionView(RedirectView):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.fulfilled = True
             rental.save(update_fields=["fulfilled"])
+            rental.item.is_available = False
+            rental.item.save(update_fields=["is_available"])
+            ItemRental.objects.exclude(id=rental.id).all().delete()
+        elif action == gettext_noop("reject"):
+            rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
+            rental.delete()
         elif action == gettext_noop("switch"):
             self.item.is_available = not self.item.is_available
             self.item.save(update_fields=["is_available"])
@@ -164,3 +170,15 @@ class ItemActionView(RedirectView):
         else:
             self.apply_action(self.action)
             return super().get(request, *args, **kwargs)
+
+
+class RentListView(LoginRequiredMixin, ListView):
+    model = ItemRental
+    template_name = 'item/rent_requests.html'
+    context_object_name = 'items'
+    
+    def get_queryset(self):
+        queryset = super(RentListView, self).get_queryset()
+        queryset = {'all_rents':ItemRental.objects.all().prefetch_related(Prefetch('item', queryset=Item.objects.select_related('owner')))}
+        return queryset
+

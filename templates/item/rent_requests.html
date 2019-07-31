@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1 style="text-align: center; margin-top:5%;">Kiralama İstekleri</h1>
+    <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Urun</th>
+                <th scope="col">İsteği Yapan</th>
+                <th scope="col">Tarih</th>
+                <th scope="col">Karar</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in items.all_rents %}
+            {{i.item.is_available}}
+                {% if i.item.owner == request.user and i.fulfilled == False %}
+                    <tr>
+                        <td>{{i.item.name}}</td>
+                        <td>{{i.hirer}}</td>
+                        <td>{{i.created}}</td>
+                        <td>
+                            <a class="btn btn-success" href="{% url 'item_accept' pk=i.item.owner.id rental_pk=i.id %}">Kabul</a>
+                            <a class="btn btn-danger" href="{% url 'item_reject' pk=i.item.owner.id rental_pk=i.id %}">Red</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}  
+            </tbody>
+          </table>
+          
+    
+
+{% endblock body %}

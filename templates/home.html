@@ -11,7 +11,7 @@
     <div class="row text-center">
       {%for category in items.all_categories%}
         <div class="col-1">
-          <form action="{% url 'searchcat' %}" method="GET">
+          <form action="{% url 'search_category' %}" method="GET">
             <button class="btn btn-{{category.get_color_display}} btn-circle btn-circle-lg m-1">
               <i class="fa fa-{{category.get_icon_display}}"></i>         
             </button>
@@ -32,7 +32,7 @@
                 Fiyat
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form method="GET" action="{% url 'search-price' %}">
+                <form method="GET" action="{% url 'search_price' %}">
                   <input type="number" placeholder="Min" step="0.01" min="0" id="minPrice" name="minPrice">
                   - <input type="number" placeholder="Max" step="0.01" min="0" id="maxPrice" name="maxPrice">
                   <input type="submit" value="submit" style="display: none;"/>

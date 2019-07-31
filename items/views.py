@@ -7,6 +7,7 @@ from items.models import Item, Category, ItemRental
 from items.forms import ItemCreateForm
 from django.urls import reverse
 from django.db.models import Q
+from django.utils.translation import gettext_noop
 
 class HomeView(ListView):
     model = Item
@@ -134,22 +135,27 @@ class ItemActionView(RedirectView):
     context_object_name='item'
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.url or reverse("item-detail", kwargs={'pk': self.kwargs["pk"]})
+        return self.url or reverse("item-detail", kwargs={'slug': self.kwargs["itemslug"]})
 
     def apply_action(self, action):
-        if action == "rent":
+        if action == gettext_noop("rent"):
             ItemRental.objects.create(hirer=self.request.user, item=self.item)
-        elif action == "accept":
+        elif action == gettext_noop("edit"):
+            self.url = reverse("item-update", kwargs={"pk": self.item.id})
+        elif action == gettext_noop("accept"):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.fulfilled = True
             rental.save(update_fields=["fulfilled"])
-        elif action == "switch":
+        elif action == gettext_noop("switch"):
             self.item.is_available = not self.item.is_available
             self.item.save(update_fields=["is_available"])
-            if not self.item.is_available:
-                self.url = reverse("home")
+        elif action == gettext_noop("remove"):
+            self.item.delete()
+            self.url = reverse("home")
         else:
             pass
+    
+
 
     def get(self, request, *args, **kwargs):
         self.item = Item.objects.get(id=self.kwargs["pk"])

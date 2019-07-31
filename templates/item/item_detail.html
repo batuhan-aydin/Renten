@@ -14,6 +14,7 @@
             <img id="itemdetail-image" src="{{item.picture.url}}" width="500px" height="500px" alt="ItemPicture">
         </div>
         <div class="col-6" id="itemdetail-description">
+            
             {% if item.owner == request.user %}
                 <a class="btn btn-outline-primary" href="{% url 'item-update' item.slug %}">Güncelle</a>
                 <a class="btn btn-outline-danger" href="{% url 'item-update' item.slug %}">Sil</a>

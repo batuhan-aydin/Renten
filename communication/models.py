@@ -1,23 +1,33 @@
 from django.db import models
 from django.conf import settings
-from items.models import Item
-
-class ItemComment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    comment = models.TextField(max_length=140)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    image = models.ImageField(blank=True, null=True)
-    def __str__(self):
-        return self.comment
+from django.utils.translation import gettext_lazy as _
 
 
-class Message(models.Model):
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='messages_from_me')
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='messages_to_me')
-    message = models.CharField(max_length=180)
-    seen = models.DateField(blank=True, null=True)
-    file = models.FileField(blank=True, null=True)
-    created_at = models.DateField(auto_now_add=True)
+class UserComments(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
+                             related_name='comments_to_me', verbose_name=_("User"))
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                              related_name='comments_by_me', verbose_name=_("Owner"))
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='replies', blank=True, null=True,
+                               verbose_name=_("Parent"))
+    comment = models.TextField(max_length=140, verbose_name=_("Comment"))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created"))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_("Updated"))
+    image = models.ImageField(blank=True, null=True, verbose_name=_("Image"))
 
+
+def determine_message_file(instance, filename):
+    low = min([instance.sender.id, instance.receiver.id])
+    high = max([instance.sender.id, instance.receiver.id])
+    return f"messages/{low}_{high}/{filename}"
+
+
+class Messages(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                               related_name='messages_from_me', verbose_name=_("Sender"))
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                                 related_name='messages_to_me', verbose_name=_("Receiver"))
+    message = models.TextField(max_length=140, verbose_name=_("Message"))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created"))
+    seen = models.DateTimeField(blank=True, null=True, verbose_name=_("Seen"))
+    file = models.FileField(blank=True, null=True, upload_to=determine_message_file, verbose_name=_("File"))

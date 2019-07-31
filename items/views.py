@@ -134,7 +134,7 @@ class ItemActionView(RedirectView):
     context_object_name='item'
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.url or reverse("item-detail", kwargs={'slug': self.kwargs["itemslug"]})
+        return self.url or reverse("item-detail", kwargs={'pk': self.kwargs["pk"]})
 
     def apply_action(self, action):
         if action == "rent":
@@ -144,9 +144,9 @@ class ItemActionView(RedirectView):
             rental.fulfilled = True
             rental.save(update_fields=["fulfilled"])
         elif action == "switch":
-            self.item.is_available_for_rental = not self.item.is_available_for_rental
-            self.item.save(update_fields=["is_available_for_rental"])
-            if not self.item.is_available_for_rental:
+            self.item.is_available = not self.item.is_available
+            self.item.save(update_fields=["is_available"])
+            if not self.item.is_available:
                 self.url = reverse("home")
         else:
             pass

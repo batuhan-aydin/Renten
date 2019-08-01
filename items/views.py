@@ -92,6 +92,20 @@ class SearchPriceView(ListView):
                     }
         return queryset   
 
+class SearchLocationView(ListView):
+    model = Item
+    template_name = 'home.html'
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        locationQuery = self.request.GET.get('location')
+        queryset = {'all_items': Item.objects.filter(owner__location=locationQuery).order_by('created_at').filter(is_available=True).all(), 
+                    'all_categories': Category.objects.all(),
+                    'is_search': True
+                    }
+        return queryset   
+
+
 class ItemDetailView(DetailView):
     model = Item
     template_name = 'item/item_detail.html'

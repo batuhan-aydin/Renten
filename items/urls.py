@@ -1,5 +1,5 @@
 from django.urls import path, include
-from items.views import HomeView, ItemDetailView, ItemUpdateView, ItemCreateView, SearchItemView, SearchCategoryView, SearchPriceView, ItemActionView, RentListView
+from items.views import HomeView, ItemDetailView, ItemUpdateView, ItemCreateView, SearchItemView, SearchCategoryView, SearchPriceView, ItemActionView, RentListView, SearchLocationView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -7,6 +7,7 @@ urlpatterns = [
     path('item/search/', SearchItemView.as_view(), name='search'),
     path('item/category/search', SearchCategoryView.as_view(), name='search_category'),
     path('item/price/search', SearchPriceView.as_view(), name='search_price'),
+    path('item/location/search', SearchLocationView.as_view(), name='search_location'),
     path("item/<int:pk>/actions/accept/<int:rental_pk>/", ItemActionView.as_view(action="accept"), name="item_accept"),
     path("item/<int:pk>/actions/reject/<int:rental_pk>/", ItemActionView.as_view(action="reject"), name="item_reject"),
     path("item/<int:pk>/actions/cancel/<int:rental_pk>/", ItemActionView.as_view(action="cancel"), name="cancel_request"),

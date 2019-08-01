@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block body %}
     <ul class="list-group">
         {% for object in object_list %}
@@ -10,32 +9,33 @@
                        list-group-item-secondary text-left
                        {% endif %}
                        ">
-
                 {% if object.sender == request.user %}
-                    <span>
+                    {% if object.file %}
+                        <a href="{{ object.file.url }}" class="badge badge-secondary">
+                        </a>
+                    {% endif %}
                     {{ object.message }}
-                </span>
                     <span class="badge badge-pill badge-info">
                     {{ object.sender.username }}
-                </span>
+                    </span>
                 {% else %}
                     <span class="badge badge-pill badge-success">
                     {{ object.sender.username }}
-                </span>
-                    <span>
+                    </span>
                     {{ object.message }}
-                </span>
+                    {% if object.file %}
+                        <a href="{{ object.file.url }}" class="badge badge-secondary">
+                        </a>
+                    {% endif %}
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
     <div class="card">
-    <div class="card-body">
-
-    <form action="{% url "messages_send" user_id=other_user.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm"></button>
-    </form>
-    </div>
+        <div class="card-body">
+            <form action="{% url "communication:messages_send" user_id=other_user.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            </form>
+        </div>
     </div>
 {% endblock %}

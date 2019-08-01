@@ -1,35 +1,69 @@
 {% extends "base.html" %}
-{
+
 {% block body %}
-    <div class="row">
-        {% for other_user,messages in request.user.get_message_groups.items %}
+<div class="container">
+    <h3 class=" margin-left">Messaging</h3>
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+          
+                <div class="inbox_chat">
+                        {% for sender in  senders%}
+                    <div class="chat_list active_chat">
+                        <div class="chat_people">
+                            <div class="chat_img"> <img src="{{sender.profile_picture.url}}"
+                                    alt="sunil"> </div>
+                            <div class="chat_ib">
+                                <h5>{{sender.username}} <span class="chat_date">Dec 25</span></h5>
+                                <p>Test, which is a new approach to have all solutions
+                                    astrology under one roof.</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+           
+        </div>
+
+
+
+        {% for sender in  senders%}
+        <a href="{% url "communication:messages_detail" user_id=sender.id %}">{{sender.username}}
+            <br></a>
+        {%endfor%}
+        <div class="row">
+            {% for message in  messages%}
             <div class="col-2">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{% url "messages_detail" user_id=other_user.id %}"><h4>{{ other_user.username }}</h4>
+                        <a href="{% url "communication:messages_detail" user_id=message %}">
+                            <h4>{{ other_user.username }}</h4>
                         </a>
                     </div>
                     <div class="card-body">
                         <p>
                             {% with messages|last as last_message %}
-
-                                {% if last_message.sender == request.user %}
-                                    Me -
-                                {% else %}
-                                    {{ last_message.sender }} -
-                                {% endif %}
-                                {{ last_message.message }}
-                                {% if last_message.seen %}
-                                    <span class="text-info">&check;&check;</span>
-                                {% else %}
-                                    <span class="text-secondary">&check;</span>
-                                {% endif %}
+                            {% if last_message.sender == request.user %}
+                            Me -
+                            {% else %}
+                            {{ last_message.sender }} -
+                            {% endif %}
+                            {{ last_message.message }}
+                            {% if last_message.seen %}
+                            <span class="text-info">&check;&check;</span>
+                            {% else %}
+                            <span class="text-secondary">&check;</span>
+                            {% endif %}
                             {% endwith %}
 
                         </p>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-{% endblock %}
+            {% endfor %}
+        </div>
+
+
+
+        {% endblock %}

@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import MessagesListView, MessagesDetailView, MessagesSendView
+app_name = 'communication'
 
 urlpatterns = [
     path('list/', MessagesListView.as_view(), name='messages_list'),

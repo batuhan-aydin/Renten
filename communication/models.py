@@ -30,4 +30,4 @@ class Messages(models.Model):
     message = models.TextField(max_length=140, verbose_name=_("Message"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created"))
     seen = models.DateTimeField(blank=True, null=True, verbose_name=_("Seen"))
-    file = models.FileField(blank=True, null=True, upload_to=determine_message_file, verbose_name=_("File"))
+    file = models.FileField(blank=True, null=True,  upload_to='user_message_files/', verbose_name=_("File"))

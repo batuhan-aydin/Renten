@@ -38,7 +38,9 @@
                 {{item.owner}}
             </div>
             <br>
-            <p style="color:gray">Satıcıya mesaj at</p>
+            <!-- <p style="color:gray">Satıcıya mesaj at</p> -->
+            <a  href = "/communication/detail/{{item.owner.id}}/send" style="color:gray">Satıcıya mesaj at</p>
+
             <br>
             {% if item.is_available == False %}
                 <a href="#" class="btn btn-warning">Urun Kiralanmış Durumda</a>

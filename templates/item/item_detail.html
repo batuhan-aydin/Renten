@@ -6,8 +6,10 @@
         <div class="col-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Anasayfa</a></li>
-                    <li class="breadcrumb-item"><a href="#">category</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Anasayfa</a></li>
+                    <li class="breadcrumb-item">   
+                        <a href="#">{{item.category}}</a>   
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">{{item.name}}</li>
                 </ol>
             </nav>

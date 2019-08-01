@@ -158,13 +158,11 @@ class ItemActionView(RedirectView):
         elif action == gettext_noop("cancel"):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.delete()
-            self.url = reverse("home")
         elif action == gettext_noop("switchrent"):
             self.item.is_available = not self.item.is_available
             self.item.save(update_fields=["is_available"])
         elif action == gettext_noop("remove"):
             self.item.delete()
-            self.url = reverse("home")
         else:
             pass
     

@@ -55,31 +55,44 @@
                                                         <div class="col-6">
                                                                 <div class="btn-group">
                                                                 {% if item.is_available %}
-                                                                        <a class="btn btn-danger btn-sm" href="#">Kiralıktan Kaldır</a>
-                                                                        <a class="btn btn-warning btn-sm" href="#">Güncelle</a>
+                                                                        <a class="btn btn-danger btn-sm" href="{% url 'switchrent' pk=item.id %}">Kiralıktan Kaldır</a>
+                                                                        <a class="btn btn-warning btn-sm" href="{% url 'item-update' itemslug=item.slug %}">Güncelle</a>
                                                                 {% else %}
-                                                                        <a class="btn btn-success btn-sm" href="#">Kiralık Listesine Ekle</a>
-                                                                        <a class="btn btn-warning btn-sm"  href="#"></a>
+                                                                        <a class="btn btn-success btn-sm" href="{% url 'switchrent' pk=item.id %}">Kiralık Listesine Ekle</a>
+                                                                        <a class="btn btn-warning btn-sm"  href="{% url 'item-update' itemslug=item.slug %}">Güncelle</a>
                                                                 {% endif %}
                                                                 </div>
                                                         </div>
                                                 </div>
                                         </div>
                                 </li>
+                                <hr>
                                 {% endfor %}
                         </ul>
                 </div>
                 <div class="col-6">
-                        <h5 class="font-weight-bold" >Kiraladığınız Ürünler</h5>
+                        <h5 class="font-weight-bold" >Kiralama İstekleriniz</h5>
                         <hr>
                         <ul class="list-unstyled">
+                                {% for i in profile.itemrental_set.all %}
                                 <li class="media">
-                                        <img src="..." class="mr-3" alt="...">
+                                        <img src="{{i.item.picture.url}}" class="mr-3 profile_item_picture" alt="..." height="150px" width="150px">
                                         <div class="media-body">
-                                                <h5 class="mt-0 mb-1">List-based media object</h5>
-                                                <p>deneme {{profile.itemrental_set.all}}</p>
+                                                <h5 class="mt-0 mb-1">{{i.item.name}}</h5>
+                                                <div class="row">
+                                                        <div class="col-6">
+                                                                Ürünü Sahibi: {{i.item.owner}}
+                                                                <br>
+                                                                Oluşturulma Zamanı: {{i.created}}
+                                                        </div>
+                                                        <div class="col-6">
+                                                                <a class="btn btn-danger" href="{% url 'cancel_request' pk=i.item.owner.id rental_pk=i.id %}">İptal Et</a>
+                                                        </div>
+                                                </div>
                                         </div>
                                 </li>
+                                <hr>
+                                {% endfor %}
                         </ul>
                 </div>
         </div>

@@ -8,6 +8,7 @@ from items.forms import ItemCreateForm
 from django.urls import reverse
 from django.db.models import Q, Prefetch
 from django.utils.translation import gettext_noop
+from django.http import HttpResponseRedirect
 
 class HomeView(ListView):
     model = Item
@@ -135,11 +136,13 @@ class ItemActionView(RedirectView):
     context_object_name='item'
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.url or reverse("rent_requests")
+        return self.url or reverse("users:me")
 
     def apply_action(self, action):
         if action == gettext_noop("rent"):
             ItemRental.objects.create(hirer=self.request.user, item=self.item)
+            #self.url= reverse("item-detail", kwargs={'slug':self.kwargs["itemslug"] })
+            self.url= reverse("home")
         elif action == gettext_noop("edit"):
             self.url = reverse("item-update", kwargs={"pk": self.item.id})
         elif action == gettext_noop("accept"):
@@ -152,7 +155,11 @@ class ItemActionView(RedirectView):
         elif action == gettext_noop("reject"):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.delete()
-        elif action == gettext_noop("switch"):
+        elif action == gettext_noop("cancel"):
+            rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
+            rental.delete()
+            self.url = reverse("home")
+        elif action == gettext_noop("switchrent"):
             self.item.is_available = not self.item.is_available
             self.item.save(update_fields=["is_available"])
         elif action == gettext_noop("remove"):

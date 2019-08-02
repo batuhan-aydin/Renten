@@ -31,6 +31,7 @@
   </li>
   {% endfor %}
 </ul>
+
 <div class="card">
   <div class="card-body">
     <form action="{% url "communication:messages_send" user_id=other_user.id %}" method="post"
@@ -39,10 +40,7 @@
     </form>
   </div>
 </div>
-{% for object in object_list %}
 
-
-{%endfor%}
 
 
 {% endblock %}

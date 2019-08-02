@@ -100,7 +100,7 @@ class SearchLocationView(ListView):
 
     def get_queryset(self):
         locationQuery = self.request.GET.get('location')
-        queryset = {'all_items': Item.objects.filter(owner__location=locationQuery).order_by('created_at').filter(is_available=True).all(), 
+        queryset = {'all_items': Item.objects.filter(owner__location__icontains=locationQuery).order_by('created_at').filter(is_available=True).all(), 
                     'all_categories': Category.objects.all(),
                     'is_search': True
                     }

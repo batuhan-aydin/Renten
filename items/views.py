@@ -171,9 +171,11 @@ class ItemActionView(RedirectView):
             rental.item.is_available = False
             rental.item.save(update_fields=["is_available"])
             ItemRental.objects.exclude(id=rental.id).all().delete()
+            self.url = reverse("rent_requests")
         elif action == gettext_noop("reject"):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.delete()
+            self.url = reverse("rent_requests")
         elif action == gettext_noop("cancel"):
             rental = ItemRental.objects.get(id=self.kwargs["rental_pk"])
             rental.delete()

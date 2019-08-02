@@ -70,7 +70,14 @@
             <div class="card-body">
               <h5 class="card-title" id="item-header"><a href="{% url 'item-detail' item.slug %}">{{item.name}}</a></h5>
               <p class="card-text" id="item-text">{{item.description|truncatewords:5}}...</p>
-              <p class="card-text"> ₺{{item.price}} </p>
+              <div class="row">
+                <div class="col-6">
+                  <p class="card-text">{{item.owner.location}}</p>
+                </div>
+                <div class="div col-6">
+                    <p class="card-text"> ₺{{item.price}} </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

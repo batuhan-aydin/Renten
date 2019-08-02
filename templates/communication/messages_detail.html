@@ -1,41 +1,48 @@
 {% extends "base.html" %}
-
 {% block body %}
-    <ul class="list-group">
-        {% for object in object_list %}
-            <li class="list-group-item
+<ul class="list-group">
+  {% for object in object_list %}
+  <li class="list-group-item
                        {% if object.sender == request.user %}
                        list-group-item-primary text-right
                        {% else %}
                        list-group-item-secondary text-left
                        {% endif %}
                        ">
-
-                {% if object.sender == request.user %}
-                    <span>
-                    {{ object.message }}
-                </span>
-                    <span class="badge badge-pill badge-info">
-                    {{ object.sender.username }}
-                </span>
-                {% else %}
-                    <span class="badge badge-pill badge-success">
-                    {{ object.sender.username }}
-                </span>
-                    <span>
-                    {{ object.message }}
-                </span>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <div class="card">
-    <div class="card-body">
-
-    <form action="{% url "messages_send" user_id=other_user.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm"></button>
+    {% if object.sender == request.user %}
+    {% if object.file %}
+    <a href="{{ object.file.url }}" class="badge badge-secondary">
+    </a>
+    {% endif %}
+    {{ object.message }}
+    <span class="badge badge-pill badge-info">
+      {{ object.sender.username }}
+    </span>
+    {% else %}
+    <span class="badge badge-pill badge-success">
+      {{ object.sender.username }}
+    </span>
+    {{ object.message }}
+    {% if object.file %}
+    <a href="{{ object.file.url }}" class="badge badge-secondary">
+    </a>
+    {% endif %}
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+<div class="card">
+  <div class="card-body">
+    <form action="{% url "communication:messages_send" user_id=other_user.id %}" method="post"
+      enctype="multipart/form-data">
+      {% csrf_token %}
     </form>
-    </div>
-    </div>
+  </div>
+</div>
+{% for object in object_list %}
+
+
+{%endfor%}
+
+
 {% endblock %}

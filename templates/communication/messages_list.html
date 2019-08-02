@@ -1,35 +1,39 @@
 {% extends "base.html" %}
-{
+{% block static %}
+<script>
+    $(".chat_ib").click(function () {
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
+</script>
+{% endblock %}
 {% block body %}
-    <div class="row">
-        {% for other_user,messages in request.user.get_message_groups.items %}
-            <div class="col-2">
-                <div class="card">
-                    <div class="card-header">
-                        <a href="{% url "messages_detail" user_id=other_user.id %}"><h4>{{ other_user.username }}</h4>
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            {% with messages|last as last_message %}
+<div class="container">
+    <h3 class=" margin-left">Messaging</h3>
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
 
-                                {% if last_message.sender == request.user %}
-                                    Me -
-                                {% else %}
-                                    {{ last_message.sender }} -
-                                {% endif %}
-                                {{ last_message.message }}
-                                {% if last_message.seen %}
-                                    <span class="text-info">&check;&check;</span>
-                                {% else %}
-                                    <span class="text-secondary">&check;</span>
-                                {% endif %}
-                            {% endwith %}
+                <div class="inbox_chat">
+                    {% for sender in  senders%}
+                    <div class="chat_list active_chat">
+                        <a href="/communication/detail/{{sender.id}}">
+                            <div class="chat_people">
+                                <div class="chat_img"> <img src="{{sender.profile_picture.url}}" alt="sunil"> </div>
+                                <div class="chat_ib">
 
-                        </p>
+                                    <h5>{{sender.username}}
+                                        <span class="chat_date">{{sender.last_login}}</span></h5>
+                                </div>
+                            </div>
                     </div>
+                    </a>
+                    {% endfor %}
+
                 </div>
             </div>
-        {% endfor %}
+        </div>
     </div>
+</div>
+
 {% endblock %}

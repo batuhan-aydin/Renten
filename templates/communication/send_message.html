@@ -4,6 +4,8 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
+{% if request.user.id != user_id %}
+
 <form method="POST" class="form-group" style="margin-top: 5%;" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="row justify-content-center">
@@ -15,4 +17,15 @@
 		</div>
 	</div>
 </form>
+{% else %}
+	<h1>Kendinize mesaj gönderemezsiniz.</h1>
+	{% block static %}
+	
+		<script>
+				setTimeout(function () {
+					window.location.href =  "/"
+				}, 1500)
+		</script>
+	{% endblock %}
+{% endif %}
 {% endblock %}

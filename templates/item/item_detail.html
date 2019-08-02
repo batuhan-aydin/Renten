@@ -7,8 +7,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'home' %}">Anasayfa</a></li>
-                    <li class="breadcrumb-item">   
-                        <a href="#">{{item.category}}</a>   
+                    <li class="breadcrumb-item">
+                        <a href="#">{{item.category}}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{item.name}}</li>
                 </ol>
@@ -16,17 +16,19 @@
             <img id="itemdetail-image" src="{{item.picture.url}}" width="500px" height="500px" alt="ItemPicture">
         </div>
         <div class="col-6" id="itemdetail-description">
-            
+            {% if request.user.id %}
             {% if item.owner == request.user %}
-                <a class="btn btn-outline-primary" href="{% url 'item-update' item.slug %}">Güncelle</a>
-                <a class="btn btn-outline-danger" href="{% url 'item_remove' pk=item.id %}">Sil</a>
+            <a class="btn btn-outline-primary" href="{% url 'item-update' item.slug %}">Güncelle</a>
+            <a class="btn btn-outline-danger" href="{% url 'item_remove' pk=item.id %}">Sil</a>
             {% else %}
-                {% if item.is_available %}
-                <a class="btn btn-outline-success" href="{% url "item_rent" pk=item.id %}">Kiralama İsteği Yap</a>
-                {% else %}
-                <a class="btn btn-danger" href="#">Urun Kiralık Değil</a>
-                {% endif %}
+            {% if item.is_available %}
+            <a class="btn btn-outline-success" href="{% url "item_rent" pk=item.id %}">Kiralama İsteği Yap</a>
+            {% else %}
+            <a class="btn btn-danger" href="#">Urun Kiralık Değil</a>
             {% endif %}
+            {% endif %}
+            {% endif %}
+
             <br>
             <br>
             <h3>₺{{item.price}}</h3>
@@ -35,26 +37,30 @@
             <br>
             <p class="font-italic">{{item.created_at}} tarihinde kiraya verildi</p>
             <hr>
-            <p style="color:gray" >{{item.description}}</p>
+            <p style="color:gray">{{item.description}}</p>
             <div class="badge badge-danger text-wrap" id="itemdetail-owner" style="width: 6rem;">
                 {{item.owner}}
             </div>
             <br>
             <!-- <p style="color:gray">Satıcıya mesaj at</p> -->
-            <a  href = "/communication/detail/{{item.owner.id}}/send" style="color:gray">Satıcıya mesaj at</p>
-
+            <a style="color:gray" {%if request.user.id and request.user != item.owner %}
+                href="/communication/detail/{{item.owner.id}}/send">Mesaj göndermek için tıklayınız.
+                {% elif not request.user.id %}
+                >Mesaf göndermek için giriş yapınız.
+                {% endif %}
+            </a>
             <br>
             {% if item.is_available == False %}
-                <a href="#" class="btn btn-warning">Urun Kiralanmış Durumda</a>
+            <a href="#" class="btn btn-warning">Urun Kiralanmış Durumda</a>
             {% endif %}
             {% if item.itemrental_set.all %}
-                <a href="#" class="btn btn-warning">Kiralama İstekleri Var</a>
+            <a href="#" class="btn btn-warning">Kiralama İstekleri Var</a>
             {% endif %}
 
         </div>
     </div>
 </div>
 
-    
-    
+
+
 {% endblock body %}

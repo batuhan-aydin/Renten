@@ -12,30 +12,15 @@ User = get_user_model()
 class MessagesListView(ListView):
     model = Messages
     context_object_name = 'message_list'
-    # def get_queryset(self):
-    #     qs =  Messages.objects.filter(receiver=self.request.user).values_list("sender",flat=True).distinct().annotate()
-    #     return qs
+    template_name = "communication/messages_list.html"
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         qs =  Messages.objects.filter(receiver=self.request.user).values_list("sender",flat=True).distinct().annotate()
-        o = User.objects.filter(pk__in=qs)   
-        # messages = Messages.objects.filter(receiver=self.request.user).values("sender").distinct().annotate()
+        o = User.objects.filter(pk__in=qs)  
         context = {'senders': o}
-                    # "messages":messages
         return context
-    # def get_queryset(self):
-    #     super().get_queryset().filter(
-    #         Q(sender_id=self.kwargs["user_id"], receiver=self.request.user) & Q(seen__isnull=True)
-    #     ).update(seen=timezone.now())
-    #     query =super().get_queryset().filter(
-    #         Q(sender_id=self.kwargs["user_id"], receiver=self.request.user) |
-    #         Q(receiver_id=self.kwargs["user_id"], sender=self.request.user)
-    #     ).order_by("created")
-    #     total = query.count()
-    #     limit = 50
-    #     offset = total - limit if total - limit > 0 else 0
-    #     return query[offset:]
-
+         
 class MessagesDetailView(ListView):
     model = Messages
     template_name = "communication/messages_detail.html"
@@ -66,7 +51,11 @@ class MessagesSendView(FormView):
     
     def get_success_url(self):
         return reverse_lazy("communication:messages_detail", kwargs={"user_id": self.kwargs["user_id"]})
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_id"] = self.kwargs["user_id"]
+        return context
+    
     def form_valid(self, form):
         Messages.objects.create(
             sender=self.request.user,

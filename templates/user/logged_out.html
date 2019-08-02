@@ -1,18 +1,11 @@
-{% extends "base/base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
-{% block title %}
-    {% trans "Logged Out" %}
-{% endblock %}
+{% block title %}Logged Out{%endblock%}
 {% block body %}
-    {% blocktrans %}You have successfully logged out.{% endblocktrans %}
+<h1>Başarılı bir şekilde çıkış yaptınız.</h1>
+<h3>Yönlendiriliyorsunuz.</h3>
+<meta http-equiv="refresh" content="2;url=/" />
 
-    <noscript><a href="/">{% blocktrans %}Click here to proceed to home page.{% endblocktrans %}</a>
-    </noscript>
-{% endblock %}
-{% block static %}
-    <script>
-        setTimeout(function () {
-            window.location.href = "/"
-        }, 10000)
-    </script>
+<noscript><a href="/user/logged_out/">Devam etmek için tıklayınız.</a>
+</noscript>
 {% endblock %}

@@ -7,7 +7,7 @@ urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register' ),
     path('login/', Login.as_view(), name='login' ),
     path('logout/', LogoutView.as_view(next_page = "/user/logged_out/"), name='logout'),
-    path('logged_out/', LogoutView.as_view(template_name="user/logged_out.html"), name='logged_out'),
+    path('logged_out/', LogoutView.as_view(next_page=None,template_name="user/logged_out.html"), name='logged_out'),
     path('reset_password/', PasswordResetView.as_view(), name='reset_password' ),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name='user_profile' ),
     path('profile/me/', ProfileDetailView.as_view(is_me=True), name='me' ),

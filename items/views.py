@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.db.models import Q, Prefetch
 from django.utils.translation import gettext_noop
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 class HomeView(ListView):
     model = Item
@@ -154,9 +155,13 @@ class ItemActionView(RedirectView):
 
     def apply_action(self, action):
         if action == gettext_noop("rent"):
-            ItemRental.objects.create(hirer=self.request.user, item=self.item)
-            #self.url= reverse("item-detail", kwargs={'slug':self.kwargs["itemslug"] })
-            self.url= reverse("home")
+            renting = ItemRental.objects.filter(Q(hirer__exact=self.request.user) & Q(item__exact=self.item))
+            if renting:
+                messages.add_message(self.request, messages.WARNING, 'Zaten Kiralama İsteği Var')
+            else:
+                ItemRental.objects.create(hirer=self.request.user, item=self.item)
+                messages.add_message(self.request, messages.SUCCESS, 'Kiralama İsteği Yapıldı')
+            self.url= reverse("item-detail", kwargs={'itemslug':self.item.slug }) 
         elif action == gettext_noop("edit"):
             self.url = reverse("item-update", kwargs={"pk": self.item.id})
         elif action == gettext_noop("accept"):

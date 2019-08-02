@@ -66,7 +66,7 @@
       {% for item in items.all_items %}
         <div class="col-3">
           <div class="card">
-            <img class="card-img-top" id="item-image" src="{{ item.picture.url }}" alt="Card image cap">
+            <a href="{% url 'item-detail' item.slug %}"><img class="card-img-top" id="item-image" src="{{ item.picture.url }}" alt="Card image cap"></a>
             <div class="card-body">
               <h5 class="card-title" id="item-header"><a href="{% url 'item-detail' item.slug %}">{{item.name}}</a></h5>
               <p class="card-text" id="item-text">{{item.description|truncatewords:5}}...</p>

@@ -19,7 +19,7 @@ class Category(models.Model):
         ('T', 'mobile-alt'),
         ('B', 'book'),
         ('M', 'music'),
-        ('C', 'fa-car'),
+        ('C', 'car'),
         ('H', 'home'),
         ('A', 'basketball-ball'),
         ('E', 'headphones'),

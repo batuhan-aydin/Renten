@@ -47,9 +47,9 @@
             <p class="font-italic">{{item.created_at}} tarihinde ilan verildi</p>
             <hr>
             <p style="color:gray">{{item.description}}</p>
-            <div class="badge badge-danger text-wrap" id="itemdetail-owner" style="width: 6rem;">
+            <a href="{% url 'users:user_profile' pk=item.owner.id %}" class="badge badge-danger text-wrap" id="itemdetail-owner" style="width: 6rem;">
                 {{item.owner}}
-            </div>
+            </a>
             <br>
             <!-- <p style="color:gray">Satıcıya mesaj at</p> -->
             <a style="color:gray" {%if request.user.id and request.user != item.owner %}

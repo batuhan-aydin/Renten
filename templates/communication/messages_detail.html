@@ -1,46 +1,44 @@
 {% extends "base.html" %}
 {% block body %}
-<ul class="list-group">
-  {% for object in object_list %}
-  <li class="list-group-item
-                       {% if object.sender == request.user %}
-                       list-group-item-primary text-right
-                       {% else %}
-                       list-group-item-secondary text-left
-                       {% endif %}
-                       ">
-    {% if object.sender == request.user %}
-    {% if object.file %}
-    <a href="{{ object.file.url }}" class="badge badge-secondary">
-    </a>
-    {% endif %}
-    {{ object.message }}
-    <span class="badge badge-pill badge-info">
-      {{ object.sender.username }}
-    </span>
-    {% else %}
-    <span class="badge badge-pill badge-success">
-      {{ object.sender.username }}
-    </span>
-    {{ object.message }}
-    {% if object.file %}
-    <a href="{{ object.file.url }}" class="badge badge-secondary">
-    </a>
-    {% endif %}
-    {% endif %}
-  </li>
-  {% endfor %}
-</ul>
-
-<div class="card">
-  <div class="card-body">
-    <form action="{% url "communication:messages_send" user_id=other_user.id %}" method="post"
-      enctype="multipart/form-data">
-      {% csrf_token %}
-    </form>
-  </div>
+<div class="container">
+    <div style="width: 40%; text-align: center;" id="message_area" >
+        <ul class="list-group">
+        {% for object in object_list %}
+        <li class="list-group-item
+                            {% if object.sender == request.user %}
+                             text-right
+                            {% else %}
+                            text-left
+                            {% endif %}
+                            ">
+            {% if object.sender == request.user %}
+            {% if object.file %}
+            <a href="{{ object.file.url }}" class="badge badge-secondary">
+            </a>
+            {% endif %}
+            {{ object.message }}
+            <span class="badge badge-pill badge-info">
+            {{ object.sender.username }}
+            </span>
+            {% else %}
+            <span class="badge badge-pill badge-success">
+            {{ object.sender.username }}
+            </span>
+            {{ object.message }}
+            {% if object.file %}
+            <a href="{{ object.file.url }}" class="badge badge-secondary">
+            </a>
+            {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+        </ul>
+        
+        <form method="POST" action="{% url 'communication:messages_send' user_id=other_user.id %}" class="form-group" style="margin-top: 5%;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="form-control" type="text" name="message" id="message" placeholder="Mesajınız">
+            <button class="btn btn-primary" type="submit" >Gönder</button>
+        </form>
+    </div>
 </div>
-
-
-
 {% endblock %}

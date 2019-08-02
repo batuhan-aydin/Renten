@@ -228,3 +228,10 @@ img{ max-width:100%;}
   width: 33px;
 }
 .messaging { padding: 0 0 50px 0;}
+
+#message_area {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);   
+}

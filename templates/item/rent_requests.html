@@ -14,7 +14,6 @@
             </thead>
             <tbody>
             {% for i in items.all_rents %}
-            {{i.item.is_available}}
                 {% if i.item.owner == request.user and i.fulfilled == False %}
                     <tr>
                         <td>{{i.item.name}}</td>

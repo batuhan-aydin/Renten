@@ -9,17 +9,20 @@
         <div class="row">
                 <div class="col-3">
                         <img src="{{profile.profile_picture.url}}" alt="Profil Resmi" width="300px" height="430px">
-                        <div style="text-align: center;">
+                        <div style="text-align: center; margin-top:2%;">
                                         {% if is_me %} 
                                         <a class="btn btn-secondary btn-lg" href="{% url "users:profile_update" %}">
                                                 <small>Güncelle</small>
+                                        </a>
+                                        <a class="btn btn-secondary btn-lg" href="{% url "communication:messages_list" %}">
+                                                <small>Mesajlar</small>
                                         </a>
                                         {% endif %}
                         </div>
                 </div>
                 <div class="col-9">
                         <ul class="list-group">
-                                <li class="list-group-item active">Kullanıcı Bilgileri</li>
+                                <li class="list-group-item active">Kullanıcı Bilgileri <a class="btn btn-danger btn-sm" href="{% url 'rent_requests' %}" style="margin-left: 70%;">Gelen İstekler</a></li>
                                 <li class="list-group-item"> <span class="font-weight-bold">Kullanıcı Adı: </span>  {{ profile.username }}</li>
                                 <li class="list-group-item"> <span class="font-weight-bold"> Ad: </span> {{ profile.first_name }}</li>
                                 <li class="list-group-item"> <span class="font-weight-bold"> Soyad: </span> {{ profile.last_name }}</li>
@@ -33,7 +36,6 @@
 
         </div>
         <br>
-        <a href="{% url "communication:messages_list" %}">MESAJLAR</a>
         <div class="row" style="text-align: center; margin-top: 3%;">
                 <div class="col-6">
                         <h5 class="font-weight-bold" >Ürünleriniz</h5>
